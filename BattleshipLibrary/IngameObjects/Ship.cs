@@ -6,14 +6,20 @@ using System.Threading.Tasks;
 
 namespace BattleshipLibrary.IngameObjects
 {
-    internal class Ship
+    public interface IShip
     {
-        internal Ship(Cell[] positions)
+        ICell[] Positions { get; }
+        bool Destroyed { get => Positions.All(x => x.Damaged); }
+    }
+
+    internal class Ship : IShip
+    {
+        internal Ship(ICell[] positions)
         {
             Positions = positions;
         }
 
-        internal Cell[] Positions { get; private set; }
-        internal bool Destroyed { get => Positions.All(x => x.Damaged); }
+        public ICell[] Positions { get; private set; }
+        public bool Destroyed { get => Positions.All(x => x.Damaged); }
     }
 }

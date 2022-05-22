@@ -21,7 +21,7 @@ namespace BattleshipLibrary.MetaObjects
 
         public static GameVariant GetClassic()
         {
-            var ships = new List<ShipVariant>
+            var ships = new[]
             {
                 new ShipVariant("Линкор", 4, 1),
                 new ShipVariant("Крейсер", 3, 2),
@@ -43,6 +43,7 @@ namespace BattleshipLibrary.MetaObjects
             Size = size;
             Count = count;
         }
+
         public string Name { get; set; }
         public int Size { get; set; }
         public int Count { get; set; }

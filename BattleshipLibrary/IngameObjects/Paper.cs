@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace BattleshipLibrary.IngameObjects
 {
-    internal class Paper
+    internal class Paper : IPaper
     {
         internal Paper(int column, int row)
         {
             Cells = new BoxCollection(column, row);
         }
 
-        internal bool Confirmed { get; set; }
-        internal BoxCollection Cells { get; set; }
-        internal List<Ship> Ships { get; set; } = new List<Ship>();
+        public bool Confirmed { get; set; }
+        public BoxCollection Cells { get; set; }
+        public List<IShip> Ships { get; set; } = new List<IShip>();
 
-        internal bool AllShipsDestroyed { get => Ships.All(x => x.Destroyed); }
+        public bool AllShipsDestroyed { get => Ships.All(x => x.Destroyed); }
 
         /// <summary>
         /// 
@@ -25,7 +25,7 @@ namespace BattleshipLibrary.IngameObjects
         /// <param name="positions"></param>
         /// <returns>Created and added ship.</returns>
         /// <exception cref="Exception">Position are null or empty || out of paper || Has another ship's part.</exception>
-        internal Ship AddNewShip(Coordinate[] positions)
+        public IShip AddNewShip(Coordinate[] positions)
         {
             if (positions == null || positions.Length == 0)
                 throw new Exception(); // Exceptions because I think such validations must be on a client.
@@ -42,14 +42,14 @@ namespace BattleshipLibrary.IngameObjects
             return ship;
         }
 
-        internal bool Hit(Coordinate coordinate)
+        public bool Hit(Coordinate coordinate)
         {
             Cells[coordinate].Damaged = true;
             return HasShipPart(coordinate);
         }
 
 
-        internal bool TryGetShipByCell(Coordinate coordinate, out Ship? ship)
+        public bool TryGetShipByCell(Coordinate coordinate, out IShip? ship)
         {
             ship = Ships.FirstOrDefault(x => x.Positions.Any(y => y.Coordinate == coordinate));
             return ship != null;
@@ -66,12 +66,14 @@ namespace BattleshipLibrary.IngameObjects
         }
     }
 
-    internal interface IPaper //todo
+    public interface IPaper //todo
     {
-        public Cell[,] Cells { get; }
-        public List<Ship> Ships { get; }
-
-        public Ship AddNewShip(Coordinate[] positions);
-        public bool hit(Coordinate coordinate);
+        BoxCollection Cells { get; }
+        List<IShip> Ships { get; }
+        IShip AddNewShip(Coordinate[] positions);
+        bool Hit(Coordinate coordinate);
+        bool Confirmed { get; set; }
+        bool AllShipsDestroyed { get; }
+        bool TryGetShipByCell(Coordinate coordinate, out IShip? ship);
     }
 }

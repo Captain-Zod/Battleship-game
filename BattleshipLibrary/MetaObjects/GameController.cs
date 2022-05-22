@@ -25,9 +25,14 @@ namespace BattleshipLibrary.MetaObjects
             _idWhooseTurn = TargetPlayer.Id;
         }
 
-        public void PlayerConfirmedHisBattlefield(int idPlayer)
+        public void ConfirmBattlefield(int idPlayer)
         {
-            Players[idPlayer].Battlefield.Confirmed = true;
+            Players[idPlayer].ConfirmPositions();
+        }
+
+        public void PlaceShip(int idPlayer)
+        {
+            Players[idPlayer].ConfirmPositions();
         }
 
         public HitResult Hit(int id, Coordinate coordinate)

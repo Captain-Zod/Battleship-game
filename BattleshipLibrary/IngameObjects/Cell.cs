@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace BattleshipLibrary.IngameObjects
 {
-    internal class Cell
+    public interface ICell
+    {
+        bool Damaged { get; set; }
+        Coordinate Coordinate { get; }
+    }
+
+    internal class Cell : ICell
     {
         internal Cell()
         {
@@ -33,11 +39,11 @@ namespace BattleshipLibrary.IngameObjects
         }
     }
 
-    internal class BoxCollection
+    public class BoxCollection
     {
-        private Cell[,] _cells;
+        private ICell[,] _cells;
 
-        internal BoxCollection(int column, int row)
+        public BoxCollection(int column, int row)
         {
             _cells = new Cell[column, row];
 
@@ -55,12 +61,12 @@ namespace BattleshipLibrary.IngameObjects
             _cells = positions;
         }
 
-        internal int GetLength(int dimension)
+        public int GetLength(int dimension)
         {
             return _cells.GetLength(dimension);
         }
 
-        internal Cell this[Coordinate coordinate]
+        public ICell this[Coordinate coordinate]
         {
             get { return _cells[coordinate.X, coordinate.Y]; }
             set { _cells[coordinate.X, coordinate.Y] = value; }
